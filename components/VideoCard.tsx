@@ -15,6 +15,23 @@ const VideoCard: NextPage<IProps> = ({ post }) => {
     const [isHover, setIsHover] = useState(false);
     const [playing, setPlaying] = useState(false);
     const [isVideoMuted, setIsVideoMuted] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    const onVideoPress = () => {
+        if (playing) {
+            videoRef?.current?.pause();
+            setPlaying(false);
+        } else {
+            videoRef?.current?.play();
+            setPlaying(true);
+        }
+    };
+
+    useEffect(() => {
+        if (videoRef?.current) {
+            videoRef.current.muted = isVideoMuted;
+        }
+    }, [isVideoMuted]);
     
   return (
     <div className="flex flex-col border-b-2 border-gray-200 pb-6">
@@ -45,6 +62,9 @@ const VideoCard: NextPage<IProps> = ({ post }) => {
                             <p className='capitalize font-medium text-xs text-gray-500 hidden md:block'>{post.postedBy.userName}</p>
                         </div>
                     </Link>
+                    <Link href="/">
+                        <p className="mt-2 font-normal">{post.caption}</p>
+                    </Link>
                 </div>
             </div>
         </div>
@@ -58,20 +78,30 @@ const VideoCard: NextPage<IProps> = ({ post }) => {
                 <Link href="/">
                     <video 
                         loop
+                        ref={videoRef}
                         className="lg:w[600px] h-[300px] md:h-[400px] lg:h-[530px] w-[200px] rounded-2xl cursor-pointer bg-gray-100"
                         src={post.video.asset.url}
                     ></video>
                 </Link>
 
                 {isHover && (
-                    <div>
+                    <div className='absolute bottom-5 bg-black w-[200px] lg:w[600px] cursor-pointer rounded-full flex justify-between px-5 py-1'>
                         {playing ? (
-                            <button>
-                                <BsFillPauseFill className='text-black text-2xl lg:text-4xl'/>
+                            <button onClick={onVideoPress}>
+                                <BsFillPauseFill className='text-[#fafafa] text-2xl'/>
                             </button>
                         ): (
-                            <button>
-                                <BsFillPlayFill className='text-black text-2xl lg:text-4xl'/>
+                            <button onClick={onVideoPress}>
+                                <BsFillPlayFill className='text-[#fafafa] text-2xl'/>
+                            </button>
+                        )}
+                        {isVideoMuted ? (
+                            <button onClick={() => setIsVideoMuted(false)}>
+                                <HiVolumeOff className='text-[#fafafa] text-2xl'/>
+                            </button>
+                        ) : (
+                            <button onClick={() => setIsVideoMuted(true)}>
+                                <HiVolumeUp className='text-[#fafafa] text-2xl'/>
                             </button>
                         )}
                     </div>
