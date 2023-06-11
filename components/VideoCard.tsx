@@ -9,9 +9,10 @@ import { NextPage } from 'next';
 
 interface IProps {
     post: Video;
+    isShowingOnHome?: boolean;
 }
 
-const VideoCard: NextPage<IProps> = ({ post }) => {
+const VideoCard: NextPage<IProps> = ({ post: { caption, postedBy, video, _id, likes }, isShowingOnHome }) => {
     const [isHover, setIsHover] = useState(false);
     const [playing, setPlaying] = useState(false);
     const [isVideoMuted, setIsVideoMuted] = useState(false);
@@ -32,19 +33,27 @@ const VideoCard: NextPage<IProps> = ({ post }) => {
             videoRef.current.muted = isVideoMuted;
         }
     }, [isVideoMuted]);
+
+    if(!isShowingOnHome) {
+        return (
+            <div>
+                <Link href={`/detail/${_id}`}>Test</Link>
+            </div>
+        )
+    }
     
   return (
     <div className="flex flex-col border-b-2 border-gray-200 pb-6">
         <div>
             <div className="flex gap-3 p-2 cursor-pointer font-semibold rounded">
                 <div className='md:w-16 md:h-16 w-10 h-10'>
-                    <Link href="">
+                    <Link href="/">
                         <>
                             <Image 
                                 width={62}
                                 height={62}
                                 className=' rounded-full'
-                                src={post.postedBy.image}
+                                src={postedBy.image}
                                 alt="user-profile"
                                 layout='responsive'
                             />
@@ -55,15 +64,15 @@ const VideoCard: NextPage<IProps> = ({ post }) => {
                     <Link href="/">
                         <div className='flex items-center gap-2'>
                             <p className='flex gap-2 items-center md:text-md font-bold text-primary'>
-                                {post.postedBy.userName}
+                                {postedBy.userName}
                                 {' '}
                                 <GoVerified className='text-blue-400 text-md'/>
                             </p>
-                            <p className='capitalize font-medium text-xs text-gray-500 hidden md:block'>{post.postedBy.userName}</p>
+                            <p className='capitalize font-medium text-xs text-gray-500 hidden md:block'>{postedBy.userName}</p>
                         </div>
                     </Link>
                     <Link href="/">
-                        <p className="mt-2 font-normal">{post.caption}</p>
+                        <p className="mt-2 font-normal">{caption}</p>
                     </Link>
                 </div>
             </div>
@@ -80,7 +89,7 @@ const VideoCard: NextPage<IProps> = ({ post }) => {
                         loop
                         ref={videoRef}
                         className="lg:w[600px] h-[300px] md:h-[400px] lg:h-[530px] w-[200px] rounded-2xl cursor-pointer bg-gray-100"
-                        src={post.video.asset.url}
+                        src={video.asset.url}
                     ></video>
                 </Link>
 
