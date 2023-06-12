@@ -7,7 +7,9 @@ import { uuid } from "uuidv4";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "GET") {
         const { id } = req.query;
-        const query = postDetailQuery(id);
+        const idValue = Array.isArray(id) ? id[0] : id || '';
+
+        const query = postDetailQuery(idValue);
 
         const data = await client.fetch(query);
 

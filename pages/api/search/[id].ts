@@ -6,8 +6,9 @@ import { client } from "@/utils/client";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "GET") {
         const { id } = req.query;
+        const idValue = Array.isArray(id) ? id[0] : id || '';
 
-        const videosQuery = searchPostsQuery(id);
+        const videosQuery = searchPostsQuery(idValue);
 
         const videos = await client.fetch(videosQuery);
 
