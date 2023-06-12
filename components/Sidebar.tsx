@@ -8,12 +8,16 @@ import { ImCancelCircle } from 'react-icons/im';
 import Discover from './Discover';
 import SuggestedAccounts from './SuggestedAccounts';
 import Footer from './Footer';
+import useAuthStore from '@/store/authStore';
 
-const Sidebar = () => {
+const Sidebar: NextPage = () => {
     const [showSidebar, setShowSidebar] = useState(true);
-    const userProfile = false;
+    const { pathname } = useRouter();
+    const { fetchAllUsers, allUsers }: any = useAuthStore();
 
-    const normalLink = "flex items-center gap-3 hover:bg-primary p-3 justify-center xl:justify-start cursor-pointer font-semibold text-[#f51997] rounded";
+    const activeLink = "flex items-center gap-3 hover:bg-primary p-3 justify-center xl:justify-start cursor-pointer font-semibold text-[#f51997] rounded";
+
+    const normalLink = "flex items-center gap-3 hover:bg-primary p-3 justify-center xl:justify-start cursor-pointer font-semibold rounded";
 
   return (
     <div>
@@ -34,7 +38,7 @@ const Sidebar = () => {
                         </div>
                     </Link>
                 </div>
-                {!userProfile && (
+                {/* {!userProfile && (
                     <div className='px-2 py-4 hidden xl:block'>
                         <p className='text-gray-400'>Log in to like and comment on videos</p>
                         <div className='pr-4'>
@@ -55,10 +59,13 @@ const Sidebar = () => {
                             />
                         </div>
                     </div>  
-                )}
+                )} */}
 
                 <Discover />
-                <SuggestedAccounts />
+                <SuggestedAccounts
+                    fetchAllUsers={fetchAllUsers}
+                    allUsers={allUsers}
+                />
                 <Footer />
             </div>
         )}

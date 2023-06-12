@@ -77,7 +77,7 @@ const Detail = ({ postDetails }: IProps) => {
                 <div className="relative flex-2 w-[1000px] lg:w-9/12 flex justify-center items-center bg-blurred-img bg-no-repeat bg-cover bg-center">
                     <div className="opacity-90 absolute top-6 left-2 lg:left-6 flex gap-6 z-50">
                         <p className="cursor-pointer" onClick={() => router.back()}>
-                            <MdOutlineCancel className="text-white text-[35px] hover:opacity-90" />
+                            <MdOutlineCancel className="text-[#f51997] text-[35px] hover:opacity-90" />
                         </p>
                     </div>
                     <div className="relative">
@@ -94,7 +94,7 @@ const Detail = ({ postDetails }: IProps) => {
                         <div className="absolute top-[45%] left-[40%]  cursor-pointer">
                             {!isPlaying && (
                                 <button onClick={onVideoClick}>
-                                    <BsFillPlayFill className="text-white text-6xl lg:text-8xl" />
+                                    <BsFillPlayFill className="text-[#f51997] text-6xl lg:text-8xl" />
                                 </button>
                             )}
                         </div>
@@ -102,11 +102,11 @@ const Detail = ({ postDetails }: IProps) => {
                     <div className="absolute bottom-5 lg:bottom-10 right-5 lg:right-10  cursor-pointer">
                         {isVideoMuted ? (
                             <button onClick={() => setIsVideoMuted(false)}>
-                                <HiVolumeOff className="text-[] text-3xl lg:text-4xl" />
+                                <HiVolumeOff className="text-[#f51997] text-3xl lg:text-4xl" />
                             </button>
                         ) : (
                             <button onClick={() => setIsVideoMuted(true)}>
-                                <HiVolumeOff className="text-white text-3xl lg: text-4xl" />
+                                <HiVolumeUp className="text-[#f51997] text-3xl lg: text-4xl" />
                             </button>
                         )}
                     </div>
@@ -128,9 +128,28 @@ const Detail = ({ postDetails }: IProps) => {
                                         {post.postedBy.userName.replace(/\s+/g, "")}{" "}
                                         <GoVerified className="text-blue-400 text-xl"/>
                                     </div>
+                                    <p className="text-md">{post.postedBy.userName}</p>
                                 </div>
                             </div>
                         </Link>
+                        <div className="px-10">
+                            <p className="text-xl text-gray-600">{post.caption}</p>
+                        </div>
+                        <div className="mt-10 px-10">
+                            {userProfile && <LikeButton
+                                likes={post.likes}
+                                flex="flex"
+                                handleLike={() => handleLike(true)}
+                                handleDislike={() => handleLike(false)}
+                            /> }
+                        </div>
+                        {/* <Comments
+                            comment={comment}
+                            setComment={setComment}
+                            addComment={addComment}
+                            comments={post.comments}
+                            isPostingComment={isPostingComment}
+                        /> */}
                     </div>
                 </div>
             </div>
